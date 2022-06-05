@@ -333,7 +333,6 @@ Cf.n	98	es-ES
 Es.n	99	es-ES
 A.up	A	es-ES
 .-	A	es-ES
-	A B D E G H I J K L M N O P R T U W	es-ES
 m.4	Abril	es-ES
 e.89	Ac	es-ES
 e.47	Ag	es-ES

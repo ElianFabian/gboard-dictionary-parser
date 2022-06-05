@@ -37,6 +37,30 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
+    fun getAllRecordsWithCategory(filepath: String): List<GBoardDictionaryRecord>
+    {
+        var line: String?
+
+        val records = mutableListOf<GBoardDictionaryRecord>()
+
+        BufferedReader(FileReader(filepath)).use { br ->
+
+            br.readLine() // skip the file header
+
+            while (br.readLine().also { line = it } != null)
+            {
+                val currentLine = line!!.split(SEPARATOR)
+
+                val currentRecord = GBoardDictionaryRecord(currentLine).apply { category = currentLine[3] }
+
+                records.add(currentRecord)
+            }
+        }
+
+        return records
+    }
+
+    @JvmStatic
     fun getRecord(filepath: String, key: String): GBoardDictionaryRecord?
     {
         var line: String?
@@ -50,6 +74,31 @@ object GBoardDictionaryParser
                 val currentLine = line!!.split(SEPARATOR)
 
                 val currentRecord = GBoardDictionaryRecord(currentLine)
+
+                if (currentRecord.key == key)
+                {
+                    return currentRecord
+                }
+            }
+        }
+
+        return null
+    }
+
+    @JvmStatic
+    fun getRecordWithCategory(filepath: String, key: String): GBoardDictionaryRecord?
+    {
+        var line: String?
+
+        BufferedReader(FileReader(filepath)).use { br ->
+
+            br.readLine() // skip the file header
+
+            while (br.readLine().also { line = it } != null)
+            {
+                val currentLine = line!!.split(SEPARATOR)
+
+                val currentRecord = GBoardDictionaryRecord(currentLine).apply { category = currentLine[3] }
 
                 if (currentRecord.key == key)
                 {
@@ -116,10 +165,35 @@ object GBoardDictionaryParser
         saveRecords(sortedRecords, filepath)
     }
 
+    /**
+     * Inserts the record in the appropriate place in the dictionary.
+     */
+    @JvmStatic
+    fun insertRecordWithCategory(record: GBoardDictionaryRecord, filepath: String)
+    {
+        val records = getAllRecordsWithCategory(filepath) as MutableList<GBoardDictionaryRecord>
+
+        records.add(record)
+
+        val sortedRecords = records.sortedBy { it.value }
+
+        saveRecords(sortedRecords, filepath)
+    }
+
     @JvmStatic
     fun deleteRecord(record: GBoardDictionaryRecord, filepath: String)
     {
         val records = getAllRecords(filepath)
+
+        val newRecords = records.filter { it.key != record.key }
+
+        saveRecords(newRecords, filepath)
+    }
+
+    @JvmStatic
+    fun deleteRecordWithCategory(record: GBoardDictionaryRecord, filepath: String)
+    {
+        val records = getAllRecordsWithCategory(filepath)
 
         val newRecords = records.filter { it.key != record.key }
 
@@ -144,7 +218,7 @@ data class GBoardDictionaryRecord @JvmOverloads constructor(
 {
     init
     {
-        if (key.isEmpty()) throw ValueEmptyException(value)
+        if (key.isEmpty()) throw KeyEmptyException(value)
         if (value.isEmpty()) throw ValueEmptyException(key)
         if (languageCode.isNotEmpty() && !languageCode.matches(languageCodeRegex)) throw IllegalLanguageCodeFormatException(languageCode)
     }

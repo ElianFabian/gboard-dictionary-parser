@@ -1,7 +1,6 @@
 package com.elian.util.files
 
 import java.io.*
-import java.lang.StringBuilder
 
 private const val FILE_HEADER = "# Gboard Dictionary version:1"
 
@@ -10,6 +9,7 @@ private const val SEPARATOR = "	"
 
 object GBoardDictionaryParser
 {
+    @JvmStatic
     fun getAllRecords(filepath: String): List<GBoardDictionaryRecord>
     {
         var line: String?
@@ -33,6 +33,7 @@ object GBoardDictionaryParser
         return records
     }
 
+    @JvmStatic
     fun getRecord(filepath: String, key: String): GBoardDictionaryRecord?
     {
         var line: String?
@@ -57,6 +58,7 @@ object GBoardDictionaryParser
         return null
     }
 
+    @JvmStatic
     fun saveRecords(records: List<GBoardDictionaryRecord>, filepath: String)
     {
         // Records must be sorted by value before saving them, that's how GBoard dictionary works.
@@ -78,6 +80,7 @@ object GBoardDictionaryParser
      * This method will be used when saving the records with its category
      * but, you can't use it for a regular GBoard dictionary file.
      */
+    @JvmStatic
     fun saveRecordsWithCategory(records: List<GBoardDictionaryRecord>, filepath: String)
     {
         // Records must be sorted by value before saving them, that's how GBoard dictionary works.
@@ -98,6 +101,7 @@ object GBoardDictionaryParser
     /**
      * Inserts the record in the appropriate place in the dictionary.
      */
+    @JvmStatic
     fun insertRecord(record: GBoardDictionaryRecord, filepath: String)
     {
         val records = getAllRecords(filepath) as MutableList<GBoardDictionaryRecord>
@@ -109,6 +113,7 @@ object GBoardDictionaryParser
         saveRecords(sortedRecords, filepath)
     }
 
+    @JvmStatic
     fun deleteRecord(record: GBoardDictionaryRecord, filepath: String)
     {
         val records = getAllRecords(filepath)

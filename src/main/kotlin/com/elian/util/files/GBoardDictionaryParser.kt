@@ -22,7 +22,8 @@ object GBoardDictionaryParser
 
         BufferedReader(FileReader(filepath)).use { br ->
 
-            br.readLine() // skip the file header
+            // skips the file header
+            if (br.readLine() != FILE_HEADER) throw NotAGBoardDictionaryFileException()
 
             while (br.readLine().also { line = it } != null)
             {
@@ -46,7 +47,8 @@ object GBoardDictionaryParser
 
         BufferedReader(FileReader(filepath)).use { br ->
 
-            br.readLine() // skip the file header
+            // skips the file header
+            if (br.readLine() != FILE_WITH_CATEGORIES_HEADER) throw NotAGBoardDictionaryWithCategoriesFileException()
 
             while (br.readLine().also { line = it } != null)
             {
@@ -68,7 +70,8 @@ object GBoardDictionaryParser
 
         BufferedReader(FileReader(filepath)).use { br ->
 
-            br.readLine() // skip the file header
+            // skips the file header
+            if (br.readLine() != FILE_HEADER) throw NotAGBoardDictionaryFileException()
 
             while (br.readLine().also { line = it } != null)
             {
@@ -93,7 +96,8 @@ object GBoardDictionaryParser
 
         BufferedReader(FileReader(filepath)).use { br ->
 
-            br.readLine() // skip the file header
+            // skips the file header
+            if (br.readLine() != FILE_WITH_CATEGORIES_HEADER) throw NotAGBoardDictionaryWithCategoriesFileException()
 
             while (br.readLine().also { line = it } != null)
             {
@@ -273,3 +277,6 @@ data class GBoardWord @JvmOverloads constructor(
 class KeyEmptyException(value: String) : Exception("The key with value '$value' can't be empty.")
 class ValueEmptyException(key: String) : Exception("The value with key '$key' can't be empty.")
 class IllegalLanguageCodeFormatException(languageCode: String) : Exception("The language code '$languageCode' is not in the correct format")
+
+class NotAGBoardDictionaryFileException : Exception("The file is not a GBoard dictionary file.")
+class NotAGBoardDictionaryWithCategoriesFileException : Exception("The file is not a GBoard dictionary with categories file.")

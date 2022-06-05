@@ -61,7 +61,7 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
-    fun getWord(filepath: String, key: String): GBoardWord?
+    fun getWord(key: String, filepath: String): GBoardWord?
     {
         var line: String?
 
@@ -86,7 +86,7 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
-    fun getWordWithCategory(filepath: String, key: String): GBoardWord?
+    fun getWordWithCategory(key: String, filepath: String): GBoardWord?
     {
         var line: String?
 

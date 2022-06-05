@@ -1,0 +1,5 @@
+# Gboard Dictionary version:1
+negro	#000000	es-ES
+azul	#0000FF	es-ES
+cian	#00FFFF	es-ES
+blanco	#FFFFFF	es-ES

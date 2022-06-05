@@ -127,6 +127,7 @@ object GBoardDictionaryParser
 data class GBoardDictionaryRecord @JvmOverloads constructor(
     var key: String,
     var value: String,
+
     /**
      * ISO 639-1 language code.
      */

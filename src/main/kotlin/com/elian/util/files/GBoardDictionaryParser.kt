@@ -1,6 +1,7 @@
 package com.elian.util.files
 
 import java.io.*
+import java.lang.StringBuilder
 
 private const val FILE_HEADER = "# Gboard Dictionary version:1"
 
@@ -134,9 +135,9 @@ data class GBoardDictionaryRecord @JvmOverloads constructor(
 {
     constructor(fileLine: List<String>) : this(fileLine[0], fileLine[1], fileLine[2])
 
-    fun toGBoardDictionary(): String = listOf(key, value, languageCode).joinToString(SEPARATOR)
+    fun toGBoardDictionary(): String = "$key$SEPARATOR$value$SEPARATOR$languageCode"
 
-    fun toGBoardDictionaryWithCategory(): String = listOf(key, value, languageCode, category).joinToString(SEPARATOR)
+    fun toGBoardDictionaryWithCategory(): String = "$key$SEPARATOR$value$SEPARATOR$languageCode$SEPARATOR$category"
 
     companion object
     {

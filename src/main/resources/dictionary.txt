@@ -282,7 +282,6 @@ I.n	53	es-ES
 Xe.n	54	es-ES
 Cs.n	55	es-ES
 Ba.n	56	es-ES
- La.n	57	es-ES
 La.n	57	es-ES
 Ce.n	58	es-ES
 Pr.n	59	es-ES

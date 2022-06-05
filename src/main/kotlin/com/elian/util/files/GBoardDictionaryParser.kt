@@ -13,11 +13,11 @@ private val languageCodeRegex = "^[a-z]{2}(-[A-Z]{2})?\$".toRegex()
 object GBoardDictionaryParser
 {
     @JvmStatic
-    fun getAllRecords(filepath: String): List<GBoardDictionaryRecord>
+    fun getAllWords(filepath: String): List<GBoardWord>
     {
         var line: String?
 
-        val records = mutableListOf<GBoardDictionaryRecord>()
+        val words = mutableListOf<GBoardWord>()
 
         BufferedReader(FileReader(filepath)).use { br ->
 
@@ -27,21 +27,21 @@ object GBoardDictionaryParser
             {
                 val currentLine = line!!.split(SEPARATOR)
 
-                val currentRecord = GBoardDictionaryRecord(currentLine)
+                val currentWord = GBoardWord(currentLine)
 
-                records.add(currentRecord)
+                words.add(currentWord)
             }
         }
 
-        return records
+        return words
     }
 
     @JvmStatic
-    fun getAllRecordsWithCategory(filepath: String): List<GBoardDictionaryRecord>
+    fun getAllWordsWithCategory(filepath: String): List<GBoardWord>
     {
         var line: String?
 
-        val records = mutableListOf<GBoardDictionaryRecord>()
+        val words = mutableListOf<GBoardWord>()
 
         BufferedReader(FileReader(filepath)).use { br ->
 
@@ -51,17 +51,17 @@ object GBoardDictionaryParser
             {
                 val currentLine = line!!.split(SEPARATOR)
 
-                val currentRecord = GBoardDictionaryRecord(currentLine).apply { category = currentLine[3] }
+                val currentWord = GBoardWord(currentLine).apply { category = currentLine[3] }
 
-                records.add(currentRecord)
+                words.add(currentWord)
             }
         }
 
-        return records
+        return words
     }
 
     @JvmStatic
-    fun getRecord(filepath: String, key: String): GBoardDictionaryRecord?
+    fun getWord(filepath: String, key: String): GBoardWord?
     {
         var line: String?
 
@@ -73,11 +73,11 @@ object GBoardDictionaryParser
             {
                 val currentLine = line!!.split(SEPARATOR)
 
-                val currentRecord = GBoardDictionaryRecord(currentLine)
+                val currentWord = GBoardWord(currentLine)
 
-                if (currentRecord.key == key)
+                if (currentWord.key == key)
                 {
-                    return currentRecord
+                    return currentWord
                 }
             }
         }
@@ -86,7 +86,7 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
-    fun getRecordWithCategory(filepath: String, key: String): GBoardDictionaryRecord?
+    fun getWordWithCategory(filepath: String, key: String): GBoardWord?
     {
         var line: String?
 
@@ -98,11 +98,11 @@ object GBoardDictionaryParser
             {
                 val currentLine = line!!.split(SEPARATOR)
 
-                val currentRecord = GBoardDictionaryRecord(currentLine).apply { category = currentLine[3] }
+                val currentWord = GBoardWord(currentLine).apply { category = currentLine[3] }
 
-                if (currentRecord.key == key)
+                if (currentWord.key == key)
                 {
-                    return currentRecord
+                    return currentWord
                 }
             }
         }
@@ -111,17 +111,17 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
-    fun saveRecords(records: List<GBoardDictionaryRecord>, filepath: String)
+    fun saveAllWords(words: List<GBoardWord>, filepath: String)
     {
-        // Records must be sorted by value before saving them, that's how GBoard dictionary works.
-        val sortedRecords = records.sortedBy { it.value }
+        // Words must be sorted by value before saving them, that's how GBoard dictionary works.
+        val sortedWords = words.sortedBy { it.value }
 
         BufferedWriter(FileWriter(filepath)).use { bw ->
 
             bw.write(FILE_HEADER)
             bw.newLine()
 
-            sortedRecords.forEach {
+            sortedWords.forEach {
                 bw.write(it.toGBoardDictionary())
                 bw.newLine()
             }
@@ -129,21 +129,21 @@ object GBoardDictionaryParser
     }
 
     /**
-     * This method will be used when saving the records with its category
+     * This method will be used when saving the words with its category
      * but, you can't use it for a regular GBoard dictionary file.
      */
     @JvmStatic
-    fun saveRecordsWithCategory(records: List<GBoardDictionaryRecord>, filepath: String)
+    fun saveAllWordsWithCategory(words: List<GBoardWord>, filepath: String)
     {
-        // Records must be sorted by value before saving them, that's how GBoard dictionary works.
-        val sortedRecords = records.sortedBy { it.value }
+        // Words must be sorted by value before saving them, that's how GBoard dictionary works.
+        val sortedWords = words.sortedBy { it.value }
 
         BufferedWriter(FileWriter(filepath)).use { bw ->
 
             bw.write(FILE_HEADER)
             bw.newLine()
 
-            sortedRecords.forEach {
+            sortedWords.forEach {
                 bw.write(it.toGBoardDictionaryWithCategory())
                 bw.newLine()
             }
@@ -151,57 +151,57 @@ object GBoardDictionaryParser
     }
 
     /**
-     * Inserts the record in the appropriate place in the dictionary.
+     * Inserts the word in the appropriate place in the dictionary.
      */
     @JvmStatic
-    fun insertRecord(record: GBoardDictionaryRecord, filepath: String)
+    fun insertWord(word: GBoardWord, filepath: String)
     {
-        val records = getAllRecords(filepath) as MutableList<GBoardDictionaryRecord>
+        val words = getAllWords(filepath) as MutableList<GBoardWord>
 
-        records.add(record)
+        words.add(word)
 
-        val sortedRecords = records.sortedBy { it.value }
+        val sortedWords = words.sortedBy { it.value }
 
-        saveRecords(sortedRecords, filepath)
+        saveAllWords(sortedWords, filepath)
     }
 
     /**
-     * Inserts the record in the appropriate place in the dictionary.
+     * Inserts the word in the appropriate place in the dictionary.
      */
     @JvmStatic
-    fun insertRecordWithCategory(record: GBoardDictionaryRecord, filepath: String)
+    fun insertWordWithCategory(word: GBoardWord, filepath: String)
     {
-        val records = getAllRecordsWithCategory(filepath) as MutableList<GBoardDictionaryRecord>
+        val words = getAllWordsWithCategory(filepath) as MutableList<GBoardWord>
 
-        records.add(record)
+        words.add(word)
 
-        val sortedRecords = records.sortedBy { it.value }
+        val sortedWords = words.sortedBy { it.value }
 
-        saveRecords(sortedRecords, filepath)
+        saveAllWords(sortedWords, filepath)
     }
 
     @JvmStatic
-    fun deleteRecord(record: GBoardDictionaryRecord, filepath: String)
+    fun deleteWord(word: GBoardWord, filepath: String)
     {
-        val records = getAllRecords(filepath)
+        val words = getAllWords(filepath)
 
-        val newRecords = records.filter { it.key != record.key }
+        val newWords = words.filter { it.key != word.key }
 
-        saveRecords(newRecords, filepath)
+        saveAllWords(newWords, filepath)
     }
 
     @JvmStatic
-    fun deleteRecordWithCategory(record: GBoardDictionaryRecord, filepath: String)
+    fun deleteWordWithCategory(word: GBoardWord, filepath: String)
     {
-        val records = getAllRecordsWithCategory(filepath)
+        val words = getAllWordsWithCategory(filepath)
 
-        val newRecords = records.filter { it.key != record.key }
+        val newWords = words.filter { it.key != word.key }
 
-        saveRecords(newRecords, filepath)
+        saveAllWords(newWords, filepath)
     }
 }
 
-data class GBoardDictionaryRecord @JvmOverloads constructor(
+data class GBoardWord @JvmOverloads constructor(
     var key: String,
     var value: String,
 
@@ -211,7 +211,7 @@ data class GBoardDictionaryRecord @JvmOverloads constructor(
     var languageCode: String = "",
 
     /**
-     * Extra property to group records.
+     * Extra property to group words.
      */
     var category: String = "",
 )
@@ -232,22 +232,22 @@ data class GBoardDictionaryRecord @JvmOverloads constructor(
     companion object
     {
         @JvmStatic
-        fun groupRecordsByCategory(records: List<GBoardDictionaryRecord>): Map<String, List<GBoardDictionaryRecord>>
+        fun groupWordsByCategory(words: List<GBoardWord>): Map<String, List<GBoardWord>>
         {
-            val groupedRecords = mutableMapOf<String, MutableList<GBoardDictionaryRecord>>()
+            val groupedWords = mutableMapOf<String, MutableList<GBoardWord>>()
 
-            records.forEach {
+            words.forEach {
 
                 val currentCategory = it.category
 
-                if (groupedRecords.containsKey(currentCategory))
+                if (groupedWords.containsKey(currentCategory))
                 {
-                    groupedRecords[currentCategory]?.add(it)
+                    groupedWords[currentCategory]?.add(it)
                 }
-                else groupedRecords[currentCategory] = mutableListOf(it)
+                else groupedWords[currentCategory] = mutableListOf(it)
             }
 
-            return groupedRecords
+            return groupedWords
         }
     }
 }

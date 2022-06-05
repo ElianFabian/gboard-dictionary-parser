@@ -10,7 +10,6 @@ private const val SEPARATOR = "	"
 private val languageCodeRegex = "^[a-z]{2}(-[A-Z]{2})?\$".toRegex()
 
 
-
 object GBoardDictionaryParser
 {
     @JvmStatic
@@ -145,6 +144,8 @@ data class GBoardDictionaryRecord @JvmOverloads constructor(
 {
     init
     {
+        if (key.isEmpty()) throw ValueEmptyException(value)
+        if (value.isEmpty()) throw ValueEmptyException(key)
         if (languageCode.isNotEmpty() && !languageCode.matches(languageCodeRegex)) throw IllegalLanguageCodeFormatException(languageCode)
     }
 
@@ -177,4 +178,6 @@ data class GBoardDictionaryRecord @JvmOverloads constructor(
     }
 }
 
+class KeyEmptyException(value: String) : Exception("The key with value '$value' can't be empty.")
+class ValueEmptyException(key: String) : Exception("The value with key '$key' can't be empty.")
 class IllegalLanguageCodeFormatException(languageCode: String) : Exception("The language code '$languageCode' is not in the correct format")

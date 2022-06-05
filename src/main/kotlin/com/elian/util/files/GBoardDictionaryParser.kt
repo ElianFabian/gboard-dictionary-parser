@@ -3,6 +3,7 @@ package com.elian.util.files
 import java.io.*
 
 private const val FILE_HEADER = "# Gboard Dictionary version:1"
+private const val FILE_WITH_CATEGORIES_HEADER = "# Gboard Dictionary with categories version:1"
 
 // This character is not a regular space character.
 private const val SEPARATOR = "	"
@@ -140,7 +141,7 @@ object GBoardDictionaryParser
 
         BufferedWriter(FileWriter(filepath)).use { bw ->
 
-            bw.write(FILE_HEADER)
+            bw.write(FILE_WITH_CATEGORIES_HEADER)
             bw.newLine()
 
             sortedWords.forEach {
@@ -198,6 +199,23 @@ object GBoardDictionaryParser
         val newWords = words.filter { it.key != word.key }
 
         saveAllWords(newWords, filepath)
+    }
+    
+    @JvmStatic
+    fun getCategories(filepath: String): List<String>
+    {
+        val words = getAllWordsWithCategory(filepath)
+        
+        val categories = mutableListOf<String>()
+        
+        words.forEach {
+            if (!categories.contains(it.category))
+            {
+                categories.add(it.category)
+            }
+        }
+        
+        return categories
     }
 }
 

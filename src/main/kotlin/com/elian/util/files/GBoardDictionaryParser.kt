@@ -7,6 +7,8 @@ private const val FILE_HEADER = "# Gboard Dictionary version:1"
 // This character is not a regular space character.
 private const val SEPARATOR = "	"
 
+private val languageCodeRegex = "^[a-z]{2}(-[A-Z]{2})?\$".toRegex()
+
 object GBoardDictionaryParser
 {
     @JvmStatic
@@ -139,6 +141,11 @@ data class GBoardDictionaryRecord @JvmOverloads constructor(
     var category: String = "",
 )
 {
+    init
+    {
+        if (languageCode.isNotEmpty() && !languageCode.matches(languageCodeRegex)) throw IllegalLanguageCodeFormatException(languageCode)
+    }
+
     constructor(fileLine: List<String>) : this(fileLine[0], fileLine[1], fileLine[2])
 
     fun toGBoardDictionary(): String = "$key$SEPARATOR$value$SEPARATOR$languageCode"
@@ -167,3 +174,5 @@ data class GBoardDictionaryRecord @JvmOverloads constructor(
         }
     }
 }
+
+class IllegalLanguageCodeFormatException(languageCode: String) : Exception("The language code '$languageCode' is not in the correct format")

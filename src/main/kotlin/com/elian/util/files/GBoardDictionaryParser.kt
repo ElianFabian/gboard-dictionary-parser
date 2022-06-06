@@ -243,6 +243,9 @@ data class GBoardWord @JvmOverloads constructor(
         if (key.isEmpty()) throw KeyEmptyException(value)
         if (value.isEmpty()) throw ValueEmptyException(key)
         if (languageCode.isNotEmpty() && !languageCode.matches(languageCodeRegex)) throw IllegalLanguageCodeFormatException(languageCode)
+        
+        if (key.length > MAX_LENGTH) key = key.take(MAX_LENGTH)
+        if (value.length > MAX_LENGTH) value = value.take(MAX_LENGTH)
     }
 
     constructor(fileLine: List<String>) : this(fileLine[0], fileLine[1], fileLine[2])
@@ -253,6 +256,9 @@ data class GBoardWord @JvmOverloads constructor(
 
     companion object
     {
+        // This is the maximum length of the key and value supported in the GBoard dictionary.
+        private const val MAX_LENGTH = 100
+        
         @JvmStatic
         fun groupWordsByCategory(words: List<GBoardWord>): Map<String, List<GBoardWord>>
         {

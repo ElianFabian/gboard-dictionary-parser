@@ -265,25 +265,6 @@ data class GBoardWord @JvmOverloads constructor(
     {
         // This is the maximum length of the key and value supported in the GBoard dictionary.
         private const val MAX_LENGTH = 100
-
-        @JvmStatic
-        fun groupWordsByCategory(words: List<GBoardWord>): Map<String, List<GBoardWord>>
-        {
-            val groupedWords = mutableMapOf<String, MutableList<GBoardWord>>()
-
-            words.forEach {
-
-                val currentCategory = it.category
-
-                if (groupedWords.containsKey(currentCategory))
-                {
-                    groupedWords[currentCategory]?.add(it)
-                }
-                else groupedWords[currentCategory] = mutableListOf(it)
-            }
-
-            return groupedWords
-        }
     }
 }
 

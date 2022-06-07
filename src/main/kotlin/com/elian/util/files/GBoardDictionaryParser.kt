@@ -268,6 +268,8 @@ data class GBoardWord @JvmOverloads constructor(
     }
 }
 
+
+
 class KeyEmptyException(value: String) : Exception("The key with value '$value' can't be empty.")
 class ValueEmptyException(key: String) : Exception("The value with key '$key' can't be empty.")
 class IllegalLanguageCodeFormatException(languageCode: String) : Exception("The language code '$languageCode' is not in the correct format")

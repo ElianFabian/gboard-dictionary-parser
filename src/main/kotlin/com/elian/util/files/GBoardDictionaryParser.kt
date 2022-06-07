@@ -224,10 +224,7 @@ object GBoardDictionaryParser
 
         val languageCodes = mutableSetOf<String>()
 
-        words.forEach {
-
-            languageCodes.add(it.languageCode)
-        }
+        words.forEach { languageCodes.add(it.languageCode) }
 
         return languageCodes
     }

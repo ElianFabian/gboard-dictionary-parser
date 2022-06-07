@@ -206,7 +206,7 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
-    fun getCategories(filepath: String): Set<String>
+    fun getAllCategories(filepath: String): Set<String>
     {
         val words = getAllWordsWithCategory(filepath)
 
@@ -218,7 +218,7 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
-    fun getLanguageCodes(filepath: String): Set<String>
+    fun getAllLanguageCodes(filepath: String): Set<String>
     {
         val words = getAllWordsWithCategory(filepath)
 

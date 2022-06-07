@@ -11,6 +11,7 @@ private const val SEPARATOR = "	"
 private val languageCodeRegex = "^[a-z]{2}(-[A-Z]{2})?\$".toRegex()
 
 
+
 object GBoardDictionaryParser
 {
     @JvmStatic

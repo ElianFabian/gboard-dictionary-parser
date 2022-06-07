@@ -263,7 +263,9 @@ data class GBoardWord @JvmOverloads constructor(
 
     companion object
     {
-        // This is the maximum length of the key and value supported in the GBoard dictionary.
+        /**
+         * The maximum length of a key and value supported in the GBoard dictionary.
+         */
         private const val MAX_LENGTH = 100
     }
 }

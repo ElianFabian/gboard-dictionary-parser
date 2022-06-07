@@ -216,6 +216,21 @@ object GBoardDictionaryParser
 
         return categories
     }
+
+    @JvmStatic
+    fun getLanguageCodes(filepath: String): Set<String>
+    {
+        val words = getAllWordsWithCategory(filepath)
+
+        val languageCodes = mutableSetOf<String>()
+
+        words.forEach {
+
+            languageCodes.add(it.languageCode)
+        }
+
+        return languageCodes
+    }
 }
 
 data class GBoardWord @JvmOverloads constructor(

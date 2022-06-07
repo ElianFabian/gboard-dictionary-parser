@@ -30,7 +30,7 @@ object GBoardDictionaryParser
             {
                 val currentLine = line!!.split(SEPARATOR)
 
-                val currentWord = GBoardWord(currentLine)
+                val currentWord = GBoardWord.from(currentLine)
 
                 words.add(currentWord)
             }
@@ -55,7 +55,7 @@ object GBoardDictionaryParser
             {
                 val currentLine = line!!.split(SEPARATOR)
 
-                val currentWord = GBoardWord(currentLine).apply { category = currentLine[3] }
+                val currentWord = GBoardWord.from(currentLine).apply { category = currentLine[3] }
 
                 words.add(currentWord)
             }
@@ -71,14 +71,14 @@ object GBoardDictionaryParser
 
         BufferedReader(FileReader(filepath)).use { br ->
 
-            // skips the file header
+            // Skips the file header
             if (br.readLine() != FILE_HEADER) throw NotAGBoardDictionaryFileException()
 
             while (br.readLine().also { line = it } != null)
             {
                 val currentLine = line!!.split(SEPARATOR)
 
-                val currentWord = GBoardWord(currentLine)
+                val currentWord = GBoardWord.from(currentLine)
 
                 if (currentWord.key == key)
                 {
@@ -97,14 +97,14 @@ object GBoardDictionaryParser
 
         BufferedReader(FileReader(filepath)).use { br ->
 
-            // skips the file header
+            // Skips the file header
             if (br.readLine() != FILE_WITH_CATEGORIES_HEADER) throw NotAGBoardDictionaryWithCategoriesFileException()
 
             while (br.readLine().also { line = it } != null)
             {
                 val currentLine = line!!.split(SEPARATOR)
 
-                val currentWord = GBoardWord(currentLine).apply { category = currentLine[3] }
+                val currentWord = GBoardWord.from(currentLine).apply { category = currentLine[3] }
 
                 if (currentWord.key == key)
                 {
@@ -231,6 +231,8 @@ object GBoardDictionaryParser
     }
 }
 
+
+
 data class GBoardWord @JvmOverloads constructor(
     var key: String,
     var value: String,
@@ -256,8 +258,6 @@ data class GBoardWord @JvmOverloads constructor(
         if (value.length > MAX_LENGTH) value = value.take(MAX_LENGTH)
     }
 
-    constructor(fileLine: List<String>) : this(fileLine[0], fileLine[1], fileLine[2])
-
     fun toGBoardDictionary(): String = "$key$SEPARATOR$value$SEPARATOR$languageCode"
 
     fun toGBoardDictionaryWithCategory(): String = "$key$SEPARATOR$value$SEPARATOR$languageCode$SEPARATOR$category"
@@ -268,6 +268,9 @@ data class GBoardWord @JvmOverloads constructor(
          * The maximum length of a key and value supported in the GBoard dictionary.
          */
         private const val MAX_LENGTH = 100
+
+        @JvmStatic
+        fun from(dictionaryLine: List<String>) = dictionaryLine.run { GBoardWord(get(0), get(1), get(2)) }
     }
 }
 

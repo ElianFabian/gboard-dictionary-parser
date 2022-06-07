@@ -206,18 +206,13 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
-    fun getCategories(filepath: String): List<String>
+    fun getCategories(filepath: String): Set<String>
     {
         val words = getAllWordsWithCategory(filepath)
 
-        val categories = mutableListOf<String>()
+        val categories = mutableSetOf<String>()
 
-        words.forEach {
-            if (!categories.contains(it.category))
-            {
-                categories.add(it.category)
-            }
-        }
+        words.forEach { categories.add(it.category) }
 
         return categories
     }

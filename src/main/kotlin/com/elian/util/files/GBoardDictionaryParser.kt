@@ -11,7 +11,6 @@ private const val SEPARATOR = "	"
 private val languageCodeRegex = "^[a-z]{2}(-[A-Z]{2})?\$".toRegex()
 
 
-
 object GBoardDictionaryParser
 {
     @JvmStatic
@@ -187,23 +186,23 @@ object GBoardDictionaryParser
     }
 
     @JvmStatic
-    fun deleteWord(word: GBoardWord, filepath: String)
+    fun removeWord(word: GBoardWord, filepath: String)
     {
-        val words = getAllWords(filepath)
+        val words = getAllWords(filepath) as MutableList<GBoardWord>
 
-        val newWords = words.filter { it.key != word.key }
+        val wordsWithoutTheDeletedOne = words.apply { remove(word) }
 
-        saveAllWords(newWords, filepath)
+        saveAllWords(wordsWithoutTheDeletedOne, filepath)
     }
 
     @JvmStatic
-    fun deleteWordWithCategory(word: GBoardWord, filepath: String)
+    fun removeWordWithCategory(word: GBoardWord, filepath: String)
     {
-        val words = getAllWordsWithCategory(filepath)
+        val words = getAllWordsWithCategory(filepath) as MutableList<GBoardWord>
 
-        val newWords = words.filter { it.key != word.key }
+        val wordsWithoutTheDeletedOne = words.apply { remove(word) }
 
-        saveAllWords(newWords, filepath)
+        saveAllWords(wordsWithoutTheDeletedOne, filepath)
     }
 
     @JvmStatic
@@ -230,7 +229,6 @@ object GBoardDictionaryParser
         return languageCodes
     }
 }
-
 
 
 data class GBoardWord @JvmOverloads constructor(
@@ -273,7 +271,6 @@ data class GBoardWord @JvmOverloads constructor(
         fun from(dictionaryLine: List<String>) = dictionaryLine.run { GBoardWord(get(0), get(1), get(2)) }
     }
 }
-
 
 
 class KeyEmptyException(value: String) : Exception("The key with value '$value' can't be empty.")

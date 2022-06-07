@@ -204,21 +204,21 @@ object GBoardDictionaryParser
 
         saveAllWords(newWords, filepath)
     }
-    
+
     @JvmStatic
     fun getCategories(filepath: String): List<String>
     {
         val words = getAllWordsWithCategory(filepath)
-        
+
         val categories = mutableListOf<String>()
-        
+
         words.forEach {
             if (!categories.contains(it.category))
             {
                 categories.add(it.category)
             }
         }
-        
+
         return categories
     }
 }
@@ -243,7 +243,7 @@ data class GBoardWord @JvmOverloads constructor(
         if (key.isEmpty()) throw KeyEmptyException(value)
         if (value.isEmpty()) throw ValueEmptyException(key)
         if (languageCode.isNotEmpty() && !languageCode.matches(languageCodeRegex)) throw IllegalLanguageCodeFormatException(languageCode)
-        
+
         if (key.length > MAX_LENGTH) key = key.take(MAX_LENGTH)
         if (value.length > MAX_LENGTH) value = value.take(MAX_LENGTH)
     }
@@ -258,7 +258,7 @@ data class GBoardWord @JvmOverloads constructor(
     {
         // This is the maximum length of the key and value supported in the GBoard dictionary.
         private const val MAX_LENGTH = 100
-        
+
         @JvmStatic
         fun groupWordsByCategory(words: List<GBoardWord>): Map<String, List<GBoardWord>>
         {
